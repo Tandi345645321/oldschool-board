@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OldSchool Board</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Приветственный экран -->
+    <div id="welcomeScreen" class="screen active">
+        <div class="welcome-container">
+            <h1>👋 Добро пожаловать на OldSchool Board</h1>
+            <p>Прежде чем начать, подтвердите что вам есть 18 лет и согласие с правилами</p>
+            
+            <div class="age-check">
+                <label>
+                    <input type="checkbox" id="ageConfirm"> Мне есть 18 лет
+                </label>
+            </div>
+            
+            <p>Я прочитал(а) и согласен(на) с <span class="rules-link" onclick="showRules()">правилами</span></p>
+            
+            <div class="button-group">
+                <button class="btn-primary" onclick="enterSite()">Войти на сайт</button>
+                <button class="btn-secondary" onclick="enterAsGuest()">Войти как гость</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Экран правил -->
+    <div id="rulesScreen" class="screen">
+        <div class="rules-container">
+            <h2>📜 Правила OldSchool Board</h2>
+            
+            <div class="rules-section">
+                <h3>Абсолютные запреты:</h3>
+                <ul>
+                    <li>🚫 Детский контент (CSAM) - мгновенный бан</li>
+                    <li>🚫 Прямые угрозы жизни и здоровью</li>
+                    <li>🚫 Раскрытие личных данных (доксинг)</li>
+                    <li>🚫 Экстремистские материалы</li>
+                </ul>
+            </div>
+
+            <button class="btn-primary" onclick="goToMain()">
+                Я согласен с правилами и хочу увидеть контент
+            </button>
+        </div>
+    </div>
+
+    <!-- Главная страница -->
+    <div id="mainScreen" class="screen">
+        <header class="main-header">
+            <div class="header-content">
+                <h1>OldSchool Board</h1>
+                <div class="user-info">
+                    <span id="userStatus">Гость</span>
+                    <button class="btn-small" onclick="logout()">Выйти</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Админ панель -->
+        <div id="adminPanel" class="admin-panel">
+            <h3>👑 Админ Панель</h3>
+            <div class="admin-grid">
+                <div class="admin-section">
+                    <h4>Управление пользователями</h4>
+                    <input type="text" id="banUserInput" placeholder="Имя пользователя">
+                    <div class="admin-buttons">
+                        <button class="btn-warning" onclick="banUser()">Забанить</button>
+                        <button class="btn-warning" onclick="muteUser()">Выдать мут</button>
+                    </div>
+                </div>
+                
+                <div class="admin-section">
+                    <h4>Статистика</h4>
+                    <div class="stats">
+                        <p>Постов: <span id="postsCount">0</span></p>
+                        <p>Пользователей: <span id="usersCount">0</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <main class="main-content">
+            <!-- Форма создания поста -->
+            <section class="create-post">
+                <h3>📝 Создать новый пост</h3>
+                <form id="postForm" onsubmit="return createPost(event)">
+                    <input type="text" id="postTitle" placeholder="Заголовок поста" required>
+                    <textarea id="postContent" placeholder="Текст поста" rows="4" required></textarea>
+                    
+                    <div class="post-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="isNSFW"> 🔞 NSFW/NSFL контент
+                        </label>
+                    </div>
+                    
+                    <div class="file-upload">
+                        <label for="postImage" class="file-label">📎 Прикрепить изображение</label>
+                        <input type="file" id="postImage" accept="image/*" onchange="previewImage(this)">
+                        <div id="imagePreview" class="image-preview"></div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Опубликовать</button>
+                </form>
+            </section>
+
+            <!-- Список постов -->
+            <section id="postsContainer" class="posts-container">
+                <!-- Посты будут здесь -->
+            </section>
+        </main>
+    </div>
+
+    <!-- Модальное окно NSFW -->
+    <div id="nsfwModal" class="modal">
+        <div class="modal-content">
+            <h3>🔞 ВНИМАНИЕ: NSFW/NSFL КОНТЕНТ</h3>
+            <div class="warning-text">
+                <p><strong>Этот пост содержит контент, который может шокировать!</strong></p>
+                <p>Если вам меньше 18 лет, вы беременны, имеете психические заболевания или легко поддаетесь стрессу - НЕ СМОТРИТЕ ДАЛЬШЕ.</p>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-danger" onclick="closeNSFWModal()">Выйти</button>
+                <button class="btn-primary" onclick="confirmNSFW()">Я понимаю риск, показать контент</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
